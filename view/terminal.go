@@ -7,7 +7,7 @@ import (
 )
 
 func goToXY(x ,y int){
-	tput("cup", strconv.Itoa(x), strconv.Itoa(y)) // an initial position
+	tput("cup", strconv.Itoa(y), strconv.Itoa(x)) // an initial position
 }
 
 func clearScreen() {
