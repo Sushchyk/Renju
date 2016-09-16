@@ -19,4 +19,5 @@ func clearScreen() {
 func tput(args ...string) error {
 	cmd := exec.Command("tput", args...)
 	cmd.Stdout = os.Stdout
-	return
+	return cmd.Run();
+}
