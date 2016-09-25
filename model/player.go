@@ -14,3 +14,7 @@ func (p *Player) CreatePlayer(plName string, plSymbol string) {
 func (p Player) GetSymbol() string{
 	return p.symbol;
 }
+
+func (p Player) GetName() string{
+	return p.name;
+}

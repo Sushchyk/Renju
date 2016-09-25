@@ -47,7 +47,7 @@ func main() {
 					gameContinue = false;
 					break;
 				}
-				currentX, currentY = game.GetPositonAfterTurn();
+				currentX, currentY = game.GetFreePositonAfterTurn();
 				view.MoveCursorAfterTurn(currentX + 1, currentY + 1, game.GetCurrentPlayer().GetSymbol());
 			}
 			continue;
@@ -60,9 +60,6 @@ func main() {
 				view.MoveCursorForTurn(currentX + 1, currentY + 1, game.GetCurrentPlayer().GetSymbol());
 			}
 		}
-
-
-
 	}
-
+	view.ShowWinner(game.GetWinnerName());
 }

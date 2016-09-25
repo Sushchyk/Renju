@@ -23,6 +23,11 @@ func DrawTurn(playerSymbol string) {
 	fmt.Print(playerSymbol);
 }
 
+func ShowWinner(playerName string) {
+	goToXY(config.HEIGHT + 4, 0);
+	fmt.Printf("%s wins!!", playerName);
+}
+
 func DrawBoard() {
 	for i:= 0; i < config.HEIGHT + 2; i++ {
 		for j := 0; j < config.WIDTH + 2; j++ {

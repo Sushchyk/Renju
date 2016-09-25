@@ -7,6 +7,7 @@ import (
 type Game struct {
 	players [2]Player;
 	currentPlayerIndex int;
+	winnerIndex int;
 	board [config.HEIGHT][config.WIDTH] string;
 }
 
@@ -19,6 +20,11 @@ func (g *Game) Start() {
 	g.players[0].CreatePlayer("Erik", config.PLAYER_ONE_SYMBOL);
 	g.players[1].CreatePlayer("Andriy", config.PLAYER_TWO_SYMBOL);
 	g.currentPlayerIndex = 0;
+	g.winnerIndex = -1;
+}
+
+func (g Game) GetWinnerName() string{
+	return g.players[g.winnerIndex].GetName();
 }
 
 func (g Game) isRowHorizontally(i, j int, playerSymbol string) bool {
@@ -58,21 +64,19 @@ func (g Game) isRowDiagonally(i, j int, playerSymbol string) bool{
 	return false;
 }
 
-func (g Game) IsRow() bool{
+func (g *Game) IsRow() bool{
 	plOneSymb := g.players[0].GetSymbol();
 	plTwoSymb := g.players[1].GetSymbol();
 
 	for i:= 0; i < config.HEIGHT; i++ {
 		for j:=0; j < config.WIDTH; j++ {
-			if (g.isRowHorizontally(i, j, plOneSymb) || g.isRowHorizontally(i, j, plTwoSymb)){
+			if (g.isRowHorizontally(i, j, plOneSymb) || g.isRowVertically(i, j, plOneSymb) || g.isRowDiagonally(i, j, plOneSymb)){
+				g.winnerIndex = 0;
 				return true;
 			}
 
-			if (g.isRowVertically(i, j, plOneSymb) || g.isRowVertically(i, j, plTwoSymb)){
-				return true;
-			}
-
-			if (g.isRowVertically(i, j, plOneSymb) || g.isRowVertically(i, j, plTwoSymb)){
+			if (g.isRowHorizontally(i, j, plTwoSymb) || g.isRowVertically(i, j, plTwoSymb) || g.isRowDiagonally(i, j, plTwoSymb)){
+				g.winnerIndex = 1;
 				return true;
 			}
 		}
@@ -113,7 +117,7 @@ func (g Game) GetFreePosition(x, y, moveX, moveY int) (int, int) {
 	return -1, -1; // out of range
 }
 
-func (g Game) GetPositonAfterTurn() (int, int) {
+func (g Game) GetFreePositonAfterTurn() (int, int) {
 	for i:= 0; i < config.HEIGHT; i++ {
 		for j:=0; j < config.WIDTH; j++ {
 			if (g.board[i][j] == config.EMPTY_SYMBOL) {
