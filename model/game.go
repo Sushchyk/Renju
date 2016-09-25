@@ -21,6 +21,66 @@ func (g *Game) Start() {
 	g.currentPlayerIndex = 0;
 }
 
+func (g Game) isRowHorizontally(i, j int, playerSymbol string) bool {
+	for k:= 0; (j + k < config.WIDTH) && k < 5; k++ {
+		if (g.board[i][j + k] != playerSymbol) {
+			break;
+		}
+		if (k == 4) {
+			return true;
+		}
+	}
+	return false;
+}
+
+func (g Game) isRowVertically(i, j int, playerSymbol string) bool {
+	for k:= 0; (i + k < config.HEIGHT) && k < 5; k++ {
+		if (g.board[i + k][j] != playerSymbol) {
+			break;
+		}
+		if (k == 4) {
+			return true;
+		}
+	}
+	return false;
+}
+
+func (g Game) isRowDiagonally(i, j int, playerSymbol string) bool{
+	for k:= 0; (i + k < config.HEIGHT) && (j+k < config.WIDTH) && k < 5; k++ {
+		if (g.board[i + k][j + k] != playerSymbol) {
+			break;
+		}
+
+		if (k == 4) {
+			return true;
+		}
+	}
+	return false;
+}
+
+func (g Game) IsRow() bool{
+	plOneSymb := g.players[0].GetSymbol();
+	plTwoSymb := g.players[1].GetSymbol();
+
+	for i:= 0; i < config.HEIGHT; i++ {
+		for j:=0; j < config.WIDTH; j++ {
+			if (g.isRowHorizontally(i, j, plOneSymb) || g.isRowHorizontally(i, j, plTwoSymb)){
+				return true;
+			}
+
+			if (g.isRowVertically(i, j, plOneSymb) || g.isRowVertically(i, j, plTwoSymb)){
+				return true;
+			}
+
+			if (g.isRowVertically(i, j, plOneSymb) || g.isRowVertically(i, j, plTwoSymb)){
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
 func (g *Game) SwitchPlayer() {
 	if (g.currentPlayerIndex == 0) {
 		g.currentPlayerIndex = 1;

@@ -26,8 +26,8 @@ func main() {
 	view.StartGame();
 	currentX, currentY := config.DEFAULT_X, config.DEFAULT_Y;
 	view.MoveCursorForTurn(currentX + 1, currentY + 1, game.GetCurrentPlayer().GetSymbol());
-
-	for (true) {
+	gameContinue := true;
+	for (gameContinue) {
 		moveX, moveY := 0, 0;
 		action := readKey();
 		switch action {
@@ -43,6 +43,10 @@ func main() {
 			if(game.MakeTurn(currentX, currentY)) {
 				view.DrawTurn(game.GetCurrentPlayer().GetSymbol());
 				game.SwitchPlayer();
+				if (game.IsRow()) {
+					gameContinue = false;
+					break;
+				}
 				currentX, currentY = game.GetPositonAfterTurn();
 				view.MoveCursorAfterTurn(currentX + 1, currentY + 1, game.GetCurrentPlayer().GetSymbol());
 			}
@@ -56,6 +60,8 @@ func main() {
 				view.MoveCursorForTurn(currentX + 1, currentY + 1, game.GetCurrentPlayer().GetSymbol());
 			}
 		}
+
+
 
 	}
 
