@@ -28,11 +28,11 @@ func (g Game) GetWinner() Player{
 }
 
 func (g Game) isRowHorizontally(i, j int, playerSymbol string) bool {
-	for k:= 0; (j + k < config.WIDTH) && k < 5; k++ {
+	for k:= 0; (j + k < config.WIDTH) && k < config.ROW_LENGTH; k++ {
 		if (g.board[i][j + k] != playerSymbol) {
 			break;
 		}
-		if (k == 4) {
+		if (k == config.ROW_LENGTH - 1) {
 			return true;
 		}
 	}
@@ -40,11 +40,11 @@ func (g Game) isRowHorizontally(i, j int, playerSymbol string) bool {
 }
 
 func (g Game) isRowVertically(i, j int, playerSymbol string) bool {
-	for k:= 0; (i + k < config.HEIGHT) && k < 5; k++ {
+	for k:= 0; (i + k < config.HEIGHT) && k < config.ROW_LENGTH; k++ {
 		if (g.board[i + k][j] != playerSymbol) {
 			break;
 		}
-		if (k == 4) {
+		if (k == config.ROW_LENGTH - 1) {
 			return true;
 		}
 	}
@@ -52,12 +52,12 @@ func (g Game) isRowVertically(i, j int, playerSymbol string) bool {
 }
 
 func (g Game) isRowDiagonally(i, j int, playerSymbol string) bool{
-	for k:= 0; (i + k < config.HEIGHT) && (j+k < config.WIDTH) && k < 5; k++ {
+	for k:= 0; (i + k < config.HEIGHT) && (j+k < config.WIDTH) && k < config.ROW_LENGTH; k++ {
 		if (g.board[i + k][j + k] != playerSymbol) {
 			break;
 		}
 
-		if (k == 4) {
+		if (k == config.ROW_LENGTH - 1) {
 			return true;
 		}
 	}

@@ -8,4 +8,4 @@ const PLAYER_TWO_SYMBOL = "o";
 const EMPTY_SYMBOL = " ";
 const DEFAULT_X = 7;
 const DEFAULT_Y = 7;
-
+const ROW_LENGTH = 5;
