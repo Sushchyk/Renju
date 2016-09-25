@@ -29,6 +29,7 @@ func ShowWinner(playerName string) {
 }
 
 func DrawBoard() {
+	goToXY(0, 0);
 	for i:= 0; i < config.HEIGHT + 2; i++ {
 		for j := 0; j < config.WIDTH + 2; j++ {
 			if (i == 0 || j == 0 || i == config.HEIGHT + 1 || j == config.WIDTH + 1) {
@@ -39,6 +40,10 @@ func DrawBoard() {
 		}
 		fmt.Print("\n")
 	}
+}
+
+func StartMenu() {
+
 }
 
 func StartGame() {
