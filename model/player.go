@@ -1,13 +1,16 @@
 package model
 
-import "fmt"
 
 type Player struct{
-	Name string
-	Symbol string
+	name string
+	symbol string
 }
 
+func (p *Player) CreatePlayer(plName string, plSymbol string) {
+	p.name = plName;
+	p.symbol = plSymbol;
+}
 
-func (p Player) DrawPlayer(){
-	fmt.Print(p.Symbol)
+func (p Player) GetSymbol() string{
+	return p.symbol;
 }

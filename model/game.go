@@ -1,157 +1,76 @@
 package model
 
 import (
-	"fmt"
-	console "rendzyu/functions"
+	config "../game_config"
 )
 
 type Game struct {
-	PlayerXPos, PlayerYPos int
-	Players [2]Player
-	CurrentPlayer Player
-	Table Board
-	Status bool
+	players [2]Player;
+	currentPlayerIndex int;
+	board [config.HEIGHT][config.WIDTH] string;
 }
 
+func (g *Game) Start() {
 
-func (g Game) RP() {
-	fmt.Println("HUJ")
+	// initialize board:
+	g.FillBoard()
+
+	// initialize players:
+	g.players[0].CreatePlayer("Erik", config.PLAYER_ONE_SYMBOL);
+	g.players[1].CreatePlayer("Andriy", config.PLAYER_TWO_SYMBOL);
+	g.currentPlayerIndex = 0;
 }
 
+func (g *Game) SwitchPlayer() {
+	if (g.currentPlayerIndex == 0) {
+		g.currentPlayerIndex = 1;
+	}	else {
+		g.currentPlayerIndex = 0;
+}
+}
+func (g Game) GetCurrentPlayer() Player{
+	return g.players[g.currentPlayerIndex];
+}
 
-func (g Game) GoThrough(x, y int, direction string) (int,int) {
-	if direction == "right"{
-		for i := x; i < len(g.Table.Table); i++{
-			if g.Table.Table[y][i] == " "{
-				return i, y
-			} else if g.Table.Table[y][i] == "☐" {
-				return -1, -1
-			}
-		}
-	} else if direction == "left" {
-		for i := x; i >0; i-- {
-			if g.Table.Table[y][i] == " " {
-				return i, y
-			} else if g.Table.Table[y][i] == "☐" {
-				return -1, -1
-			}
-		}
-	} else if direction == "up"{
-		for i := y; i > 0; i--{
-			if g.Table.Table[i][x] == " "{
-				return x, i
-			} else if g.Table.Table[i][x] == "☐" {
-				return -1, -1
-			}
-		}
-	} else if direction == "down"{
-		for i := y; i < len(g.Table.Table); i++{
-			if g.Table.Table[i][x] == " "{
-				return x, i
-			} else if g.Table.Table[i][x] == "☐" {
-				return -1, -1
-			}
+func (g *Game) FillBoard() {
+	for i:= 0; i < config.HEIGHT; i++ {
+		for j:= 0; j < config.WIDTH; j++ {
+			g.board[i][j] = config.EMPTY_SYMBOL;
 		}
 	}
-	return -1, -1
 }
 
-func (g *Game) MakeTurn(){
-	L:
-		for true{
-			x, y := g.PlayerXPos, g.PlayerYPos
-			switch console.ReadKey() {
-			case "w":
-				if g.Table.Table[y-1][x] == "☐"{
-					continue
-				} else if g.Table.Table[y-1][x] == "x" || g.Table.Table[y-1][x] == "o"{
-					newX, newY := g.GoThrough(x, y, "up")
-					if newX == -1 && newY == -1{
-						continue
-					} else{
-						g.PlayerXPos, g.PlayerYPos = newX, newY
-						g.Table.CleanBoard(y, x)
-						g.Table.PlaceOnBoard(g.PlayerYPos, g.PlayerXPos, g.CurrentPlayer.Symbol)
-						console.Clear()
-						g.Table.DrawBoard()
-					}
+func (g Game) GetFreePosition(x, y, moveX, moveY int) (int, int) {
+	nextPosX := x + moveX;
+	nextPosY := y + moveY;
+	for (nextPosX >= 0  && nextPosY >= 0 && nextPosX < config.WIDTH && nextPosY < config.HEIGHT) {
+		if (g.board[nextPosY][nextPosX] == config.EMPTY_SYMBOL) {
+			return nextPosX, nextPosY;
+		}
+		nextPosX += moveX;
+		nextPosY += moveY;
+	}
+	return -1, -1; // out of range
+}
 
-				} else {
-					g.Table.CleanBoard(y, x)
-					g.PlayerYPos--
-					g.Table.PlaceOnBoard(y - 1, x, g.CurrentPlayer.Symbol)
-					console.Clear()
-					g.Table.DrawBoard()
-				}
-			case "s":
-				if g.Table.Table[y+1][x] == "☐" {
-					continue
-				} else if g.Table.Table[y+1][x] == "x" || g.Table.Table[y+1][x] == "o"{
-						newX, newY := g.GoThrough(x, y, "down")
-					if newX == -1 && newY == -1{
-						continue
-					} else{
-						g.PlayerXPos, g.PlayerYPos = newX, newY
-						g.Table.CleanBoard(y, x)
-						g.Table.PlaceOnBoard(g.PlayerYPos, g.PlayerXPos, g.CurrentPlayer.Symbol)
-						console.Clear()
-						g.Table.DrawBoard()
-					}
-				}else {
-					g.Table.CleanBoard(y, x)
-					g.PlayerYPos++
-					g.Table.PlaceOnBoard(y + 1, x, g.CurrentPlayer.Symbol)
-					console.Clear()
-					g.Table.DrawBoard()
-				}
-			case "d":
-				if g.Table.Table[y][x + 1] == "☐" {
-					continue
-				} else if g.Table.Table[y][x + 1] == "x" || g.Table.Table[y][x + 1] == "o"{
-						newX, newY := g.GoThrough(x, y, "right")
-					if newX == -1 && newY == -1{
-						continue
-					} else{
-						g.PlayerXPos, g.PlayerYPos = newX, newY
-						g.Table.CleanBoard(y, x)
-						g.Table.PlaceOnBoard(g.PlayerYPos, g.PlayerXPos, g.CurrentPlayer.Symbol)
-						console.Clear()
-						g.Table.DrawBoard()
-					}
-				} else {
-					g.Table.CleanBoard(y, x)
-					g.PlayerXPos++
-					g.Table.PlaceOnBoard(y, x + 1, g.CurrentPlayer.Symbol)
-					console.Clear()
-					g.Table.DrawBoard()
-				}
-			case "a":
-				if g.Table.Table[y][x - 1] == "☐" {
-					continue
-				} else if g.Table.Table[y][x - 1] == "x" || g.Table.Table[y][x - 1] == "o"{
-						newX, newY := g.GoThrough(x, y, "left")
-					if newX == -1 && newY == -1{
-						continue
-					} else{
-						g.PlayerXPos, g.PlayerYPos = newX, newY
-						g.Table.CleanBoard(y, x)
-						g.Table.PlaceOnBoard(g.PlayerYPos, g.PlayerXPos, g.CurrentPlayer.Symbol)
-						console.Clear()
-						g.Table.DrawBoard()
-					}
-				} else {
-					g.Table.CleanBoard(y, x)
-					g.PlayerXPos--
-					g.Table.PlaceOnBoard(y, x - 1, g.CurrentPlayer.Symbol)
-					console.Clear()
-					g.Table.DrawBoard()
-				}
-			case "f":
-				g.Table.PlaceOnBoard(y, x, g.CurrentPlayer.Symbol)
-				console.Clear()
-				g.Table.DrawBoard()
-				g.PlayerXPos, g.PlayerYPos = g.Table.FindStartPosition()
-				break L
+func (g Game) GetPositonAfterTurn() (int, int) {
+	for i:= 0; i < config.HEIGHT; i++ {
+		for j:=0; j < config.WIDTH; j++ {
+			if (g.board[i][j] == config.EMPTY_SYMBOL) {
+				return j, i;
 			}
 		}
+
+	}
+	return -1, -1;
+}
+
+func (g *Game) MakeTurn(x, y int) bool{
+	if (g.board[y][x] == config.EMPTY_SYMBOL) {
+		g.board[y][x] = g.GetCurrentPlayer().GetSymbol();
+		return true;
+	}
+	return  false;
+
+
 }

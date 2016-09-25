@@ -6,14 +6,20 @@ import (
 	"os"
 )
 
-func goToXY(x ,y int){
-	tput("cup", strconv.Itoa(y), strconv.Itoa(x)) // an initial position
+func goToXY (x int, y int) error {
+	cmd := exec.Command("tput","cup", strconv.Itoa(x), strconv.Itoa(y))
+	cmd.Stdout = os.Stdout
+	return cmd.Run()
 }
 
-func clearScreen() {
-	c := exec.Command("clear")
-	c.Stdout = os.Stdout
-	c.Run()
+func clearScreen() error{
+	cmd := exec.Command("clear")
+	cmd.Stdout = os.Stdout
+	return cmd.Run()
+}
+
+func moveCursorLeft() {
+	tput("cub1");
 }
 
 func tput(args ...string) error {
