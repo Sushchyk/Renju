@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 	config "../game_config"
+	"os/exec"
 )
 
 func MoveCursorForTurn(x int, y int, cursorSymbol string) {
@@ -25,7 +26,9 @@ func DrawTurn(playerSymbol string) {
 
 func ShowWinner(playerName string) {
 	goToXY(config.HEIGHT + 4, 0);
-	fmt.Printf("%s wins!!", playerName);
+	fmt.Printf("CONGRATULATIONS!\nWINNER:\n%s", playerName);
+	fmt.Println("Press 'Enter' to back in main menu");
+	ReadString();
 }
 
 func DrawBoard() {
@@ -42,8 +45,13 @@ func DrawBoard() {
 	}
 }
 
-func StartMenu() {
-
+func GetNameOfPlayer(playerNumber int) string{
+	defer exec.Command("stty", "-F", "/dev/tty", "echo")
+	clearScreen();
+	goToXY(0, 0);
+	fmt.Printf("Enter name of Player %d: ", playerNumber);
+	var playerName = ReadString();
+	return playerName;
 }
 
 func StartGame() {

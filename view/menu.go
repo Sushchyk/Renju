@@ -3,7 +3,6 @@ package view
 import (
 	"fmt"
 	"os"
-	"os/exec"
 )
 
 
@@ -19,7 +18,7 @@ func drawMenu()  {
 func InMenu() {
 	drawMenu();
 	 for true {
-		 switch readKey() {
+		 switch ReadKey() {
 		 case "1":
 			 return;
 		 case "2":
@@ -31,6 +30,7 @@ func InMenu() {
 		 }
 		 drawMenu();
 	 }
+
 }
 
 func help () {
@@ -39,7 +39,7 @@ func help () {
 	fmt.Print("HELP\n\n");
 	fmt.Println("\tUse 'w', 'a', 's', 'd' to move, and 'f' to make turn");
 	fmt.Println("\tPress any key to back in main menu")
-	readKey();
+	ReadKey();
 }
 
 func about() {
@@ -48,7 +48,7 @@ func about() {
 	fmt.Print("ABOUT\n\n");
 	fmt.Println("\tMade by A.Sushchyk, E.Gimiranov, S.Pryhodko (KP-42)");
 	fmt.Println("\tPress any key to back in main menu")
-	readKey();
+	ReadKey();
 }
 
 func exit() {

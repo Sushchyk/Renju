@@ -12,9 +12,10 @@ import (
 func main() {
 	for true {
 		view.InMenu();
-
+		playerOneName := view.GetNameOfPlayer(1);
+		playerTwoName := view.GetNameOfPlayer(2);
 		var game model.Game;
-		game.Start();
+		game.Start(playerOneName, playerTwoName);
 		view.StartGame();
 		currentX, currentY := config.DEFAULT_X, config.DEFAULT_Y;
 		view.MoveCursorForTurn(currentX + 1, currentY + 1, game.GetCurrentPlayer().GetSymbol());
@@ -54,5 +55,6 @@ func main() {
 			}
 		}
 		view.ShowWinner(game.GetWinner().GetName());
+
 	}
 }

@@ -4,13 +4,22 @@ import (
 	"strconv"
 	"os/exec"
 	"os"
+	"bufio"
 )
+
 func ReadKey() string{
 	exec.Command("stty", "-F", "/dev/tty", "cbreak", "min", "1").Run()
 	exec.Command("stty", "-F", "/dev/tty", "-echo").Run()
+	defer exec.Command("stty", "-F", "/dev/tty", "echo").Run()
 	var b []byte = make([]byte, 1)
 	os.Stdin.Read(b)
 	return string(b)
+}
+
+func ReadString() string{
+	reader := bufio.NewReader(os.Stdin)
+	text, _ := reader.ReadString('\n')
+	return string(text);
 }
 
 func goToXY (x int, y int) error {

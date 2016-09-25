@@ -11,14 +11,14 @@ type Game struct {
 	board [config.HEIGHT][config.WIDTH] string;
 }
 
-func (g *Game) Start() {
+func (g *Game) Start(playerOneName, playerTwoName string) {
 
 	// initialize board:
 	g.FillBoard()
 
 	// initialize players:
-	g.players[0].CreatePlayer("Erik", config.PLAYER_ONE_SYMBOL);
-	g.players[1].CreatePlayer("Andriy", config.PLAYER_TWO_SYMBOL);
+	g.players[0].CreatePlayer(playerOneName, config.PLAYER_ONE_SYMBOL);
+	g.players[1].CreatePlayer(playerTwoName, config.PLAYER_TWO_SYMBOL);
 	g.currentPlayerIndex = 0;
 	g.winnerIndex = -1;
 }
