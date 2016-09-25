@@ -53,7 +53,7 @@ func about() {
 	clearScreen();
 	goToXY(0, 0);
 	fmt.Print("ABOUT\n\n");
-	fmt.Println("\tMade by A.Sushchyk, E.Gimiranov (KP-42)");
+	fmt.Println("\tMade by A.Sushchyk, E.Gimiranov, S.Pryhodko (KP-42)");
 	fmt.Println("\tPress any key to back in main menu")
 	readKey();
 }
