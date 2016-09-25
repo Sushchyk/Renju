@@ -23,8 +23,8 @@ func (g *Game) Start() {
 	g.winnerIndex = -1;
 }
 
-func (g Game) GetWinnerName() string{
-	return g.players[g.winnerIndex].GetName();
+func (g Game) GetWinner() Player{
+	return g.players[g.winnerIndex];
 }
 
 func (g Game) isRowHorizontally(i, j int, playerSymbol string) bool {

@@ -61,5 +61,5 @@ func main() {
 			}
 		}
 	}
-	view.ShowWinner(game.GetWinnerName());
+	view.ShowWinner(game.GetWinner().GetName());
 }
