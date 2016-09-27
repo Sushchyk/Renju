@@ -27,6 +27,14 @@ func (g Game) GetWinner() Player{
 	return g.players[g.winnerIndex];
 }
 
+func (g Game) IsTie() bool{
+	return (g.winnerIndex == -1);
+}
+
+func (g *Game) makeTie() {
+	g.winnerIndex = -1;
+}
+
 func (g Game) isRowHorizontally(i, j int, playerSymbol string) bool {
 	for k:= 0; (j + k < config.WIDTH) && k < config.ROW_LENGTH; k++ {
 		if (g.board[i][j + k] != playerSymbol) {
@@ -62,7 +70,7 @@ func (g Game) isRowDiagonally(i, j int, playerSymbol string) bool{
 		}
 	}
 
-	for k:= 0; (i + k < config.HEIGHT) && (j+k < config.WIDTH) && k < config.ROW_LENGTH; k++ {
+	for k:= 0; (i + k < config.HEIGHT) && (j-k >=0) && k < config.ROW_LENGTH; k++ {
 		if (g.board[i + k][j - k] != playerSymbol) {
 			break;
 		}
@@ -136,6 +144,7 @@ func (g Game) GetFreePositonAfterTurn() (int, int) {
 		}
 
 	}
+	g.makeTie();
 	return -1, -1;
 }
 

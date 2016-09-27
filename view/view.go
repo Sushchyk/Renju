@@ -31,6 +31,13 @@ func ShowWinner(playerName string) {
 	ReadString();
 }
 
+func ShowTie() {
+	goToXY(config.HEIGHT + 4, 0);
+	fmt.Println("DRAW!");
+	fmt.Println("Press 'Enter' to back in main menu");
+	ReadString();
+}
+
 func DrawBoard() {
 	goToXY(0, 0);
 	for i:= 0; i < config.HEIGHT + 2; i++ {
