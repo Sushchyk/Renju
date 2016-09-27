@@ -61,6 +61,16 @@ func (g Game) isRowDiagonally(i, j int, playerSymbol string) bool{
 			return true;
 		}
 	}
+
+	for k:= 0; (i + k < config.HEIGHT) && (j+k < config.WIDTH) && k < config.ROW_LENGTH; k++ {
+		if (g.board[i + k][j - k] != playerSymbol) {
+			break;
+		}
+
+		if (k == config.ROW_LENGTH - 1) {
+			return true;
+		}
+	}
 	return false;
 }
 
