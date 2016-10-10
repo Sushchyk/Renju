@@ -9,5 +9,4 @@ You can find rules [here](http://www.renju.net/study/rules.php)
 
 ####Contributors:
 Gimiranov Erik <br />
-Prihodko Sergiy <br />
 Sushchyk Andriy <br />
