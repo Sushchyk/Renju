@@ -149,6 +149,9 @@ func (g Game) GetFreePositonAfterTurn() (int, int) {
 }
 
 func (g *Game) MakeTurn(x, y int) bool{
+	if (y < 0 || y >= config.HEIGHT || x < 0 || x >= config.WIDTH){
+		return false
+	}
 	if (g.board[y][x] == config.EMPTY_SYMBOL) {
 		g.board[y][x] = g.GetCurrentPlayer().GetSymbol();
 		return true;

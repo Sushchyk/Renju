@@ -41,7 +41,7 @@ func main() {
 						}
 						currentX, currentY = game.GetFreePositonAfterTurn();
 						if (currentX == -1 || currentY == -1) {
-							break L;//draw:
+							break L;//draw - nich`ya:
 
 						}
 						view.MoveCursorAfterTurn(currentX + 1, currentY + 1, game.GetCurrentPlayer().GetSymbol());
