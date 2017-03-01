@@ -1,11 +1,8 @@
 package main
 
-
 import (
 	model "./model"
 	view "./view"
-	//"fmt"
-	//"fmt"
 	config "./game_config"
 )
 
@@ -20,49 +17,49 @@ func main() {
 		currentX, currentY := config.DEFAULT_X, config.DEFAULT_Y;
 		view.MoveCursorForTurn(currentX + 1, currentY + 1, game.GetCurrentPlayer().GetSymbol());
 		L:
-			for true {
-				moveX, moveY := 0, 0;
-				action := view.ReadKey();
-				switch action {
-				case "s":
-					moveY = 1;
-				case "w":
-					moveY = -1;
-				case "d":
-					moveX = 1;
-				case "a":
-					moveX = -1;
-				case "f":
-					if (game.MakeTurn(currentX, currentY)) {
-						view.DrawTurn(game.GetCurrentPlayer().GetSymbol());
-						game.SwitchPlayer();
-						if (game.IsRow()) {
-							break L;
-						}
-						currentX, currentY = game.GetFreePositonAfterTurn();
-						if (currentX == -1 || currentY == -1) {
-							break L;//draw - nich`ya:
+		for true {
+			moveX, moveY := 0, 0;
+			action := view.ReadKey();
+			switch action {
+			case config.MOVE_DOWN_KEY:
+				moveY = 1;
+			case config.MOVE_UP_KEY:
+				moveY = -1;
+			case config.MOVE_RIGHT_KEY:
+				moveX = 1;
+			case config.MOVE_LEFT_KEY:
+				moveX = -1;
+			case config.FIRE_KEY:
+				if (game.MakeTurn(currentX, currentY)) {
+					view.DrawTurn(game.GetCurrentPlayer().GetSymbol());
+					game.SwitchPlayer();
+					if (game.IsRow()) {
+						break L;
+					}
+					currentX, currentY = game.GetFreePositonAfterTurn();
+					if (currentX == -1 || currentY == -1) {
+						break L;
 
-						}
-						view.MoveCursorAfterTurn(currentX + 1, currentY + 1, game.GetCurrentPlayer().GetSymbol());
 					}
-					continue;
+					view.MoveCursorAfterTurn(currentX + 1, currentY + 1, game.GetCurrentPlayer().GetSymbol());
 				}
-				if (action == "w" || action == "s" || action == "d" || action == "a") {
-					newX, newY := game.GetFreePosition(currentX, currentY, moveX, moveY);
-					if (newX != -1 && newY != -1) {
-						currentY = newY;
-						currentX = newX;
-						view.MoveCursorForTurn(currentX + 1, currentY + 1, game.GetCurrentPlayer().GetSymbol());
-					}
+				continue;
+			}
+			if (moveX != 0 || moveY != 0) {
+				newX, newY := game.GetFreePosition(currentX, currentY, moveX, moveY);
+				if (newX != -1 && newY != -1) {
+					currentY = newY;
+					currentX = newX;
+					view.MoveCursorForTurn(currentX + 1, currentY + 1, game.GetCurrentPlayer().GetSymbol());
 				}
 			}
+		}
 
 		if (game.IsTie()) {
 			view.ShowTie();
-		}	else {
-				view.ShowWinner(game.GetWinner().GetName());
-			}
+		} else {
+			view.ShowWinner(game.GetWinner().GetName());
+		}
 
 	}
 }
