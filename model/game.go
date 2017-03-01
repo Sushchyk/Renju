@@ -5,16 +5,15 @@ import (
 )
 
 type Game struct {
-	players [2]Player;
+	players            [2]Player;
 	currentPlayerIndex int;
-	winnerIndex int;
-	board [config.HEIGHT][config.WIDTH] string;
+	winnerIndex        int;
+	board              [config.HEIGHT][config.WIDTH] string;
 }
 
 func (g *Game) Start(playerOneName, playerTwoName string) {
 
-	// initialize board:
-	g.FillBoard()
+	g.InitializeBoard()
 
 	// initialize players:
 	g.players[0].CreatePlayer(playerOneName, config.PLAYER_ONE_SYMBOL);
@@ -23,11 +22,11 @@ func (g *Game) Start(playerOneName, playerTwoName string) {
 	g.winnerIndex = -1;
 }
 
-func (g Game) GetWinner() Player{
+func (g Game) GetWinner() Player {
 	return g.players[g.winnerIndex];
 }
 
-func (g Game) IsTie() bool{
+func (g Game) IsTie() bool {
 	return (g.winnerIndex == -1);
 }
 
@@ -36,7 +35,7 @@ func (g *Game) makeTie() {
 }
 
 func (g Game) isRowHorizontally(i, j int, playerSymbol string) bool {
-	for k:= 0; (j + k < config.WIDTH) && k < config.ROW_LENGTH; k++ {
+	for k := 0; (j + k < config.WIDTH) && k < config.ROW_LENGTH; k++ {
 		if (g.board[i][j + k] != playerSymbol) {
 			break;
 		}
@@ -48,7 +47,7 @@ func (g Game) isRowHorizontally(i, j int, playerSymbol string) bool {
 }
 
 func (g Game) isRowVertically(i, j int, playerSymbol string) bool {
-	for k:= 0; (i + k < config.HEIGHT) && k < config.ROW_LENGTH; k++ {
+	for k := 0; (i + k < config.HEIGHT) && k < config.ROW_LENGTH; k++ {
 		if (g.board[i + k][j] != playerSymbol) {
 			break;
 		}
@@ -59,8 +58,8 @@ func (g Game) isRowVertically(i, j int, playerSymbol string) bool {
 	return false;
 }
 
-func (g Game) isRowDiagonally(i, j int, playerSymbol string) bool{
-	for k:= 0; (i + k < config.HEIGHT) && (j+k < config.WIDTH) && k < config.ROW_LENGTH; k++ {
+func (g Game) isRowDiagonally(i, j int, playerSymbol string) bool {
+	for k := 0; (i + k < config.HEIGHT) && (j + k < config.WIDTH) && k < config.ROW_LENGTH; k++ {
 		if (g.board[i + k][j + k] != playerSymbol) {
 			break;
 		}
@@ -70,7 +69,7 @@ func (g Game) isRowDiagonally(i, j int, playerSymbol string) bool{
 		}
 	}
 
-	for k:= 0; (i + k < config.HEIGHT) && (j-k >=0) && k < config.ROW_LENGTH; k++ {
+	for k := 0; (i + k < config.HEIGHT) && (j - k >= 0) && k < config.ROW_LENGTH; k++ {
 		if (g.board[i + k][j - k] != playerSymbol) {
 			break;
 		}
@@ -82,18 +81,18 @@ func (g Game) isRowDiagonally(i, j int, playerSymbol string) bool{
 	return false;
 }
 
-func (g *Game) IsRow() bool{
+func (g *Game) IsRow() bool {
 	plOneSymb := g.players[0].GetSymbol();
 	plTwoSymb := g.players[1].GetSymbol();
 
-	for i:= 0; i < config.HEIGHT; i++ {
-		for j:=0; j < config.WIDTH; j++ {
-			if (g.isRowHorizontally(i, j, plOneSymb) || g.isRowVertically(i, j, plOneSymb) || g.isRowDiagonally(i, j, plOneSymb)){
+	for i := 0; i < config.HEIGHT; i++ {
+		for j := 0; j < config.WIDTH; j++ {
+			if (g.isRowHorizontally(i, j, plOneSymb) || g.isRowVertically(i, j, plOneSymb) || g.isRowDiagonally(i, j, plOneSymb)) {
 				g.winnerIndex = 0;
 				return true;
 			}
 
-			if (g.isRowHorizontally(i, j, plTwoSymb) || g.isRowVertically(i, j, plTwoSymb) || g.isRowDiagonally(i, j, plTwoSymb)){
+			if (g.isRowHorizontally(i, j, plTwoSymb) || g.isRowVertically(i, j, plTwoSymb) || g.isRowDiagonally(i, j, plTwoSymb)) {
 				g.winnerIndex = 1;
 				return true;
 			}
@@ -106,17 +105,17 @@ func (g *Game) IsRow() bool{
 func (g *Game) SwitchPlayer() {
 	if (g.currentPlayerIndex == 0) {
 		g.currentPlayerIndex = 1;
-	}	else {
+	} else {
 		g.currentPlayerIndex = 0;
+	}
 }
-}
-func (g Game) GetCurrentPlayer() Player{
+func (g Game) GetCurrentPlayer() Player {
 	return g.players[g.currentPlayerIndex];
 }
 
-func (g *Game) FillBoard() {
-	for i:= 0; i < config.HEIGHT; i++ {
-		for j:= 0; j < config.WIDTH; j++ {
+func (g *Game) InitializeBoard() {
+	for i := 0; i < config.HEIGHT; i++ {
+		for j := 0; j < config.WIDTH; j++ {
 			g.board[i][j] = config.EMPTY_SYMBOL;
 		}
 	}
@@ -132,12 +131,13 @@ func (g Game) GetFreePosition(x, y, moveX, moveY int) (int, int) {
 		nextPosX += moveX;
 		nextPosY += moveY;
 	}
+
 	return -1, -1; // out of range
 }
 
 func (g Game) GetFreePositonAfterTurn() (int, int) {
-	for i:= 0; i < config.HEIGHT; i++ {
-		for j:=0; j < config.WIDTH; j++ {
+	for i := 0; i < config.HEIGHT; i++ {
+		for j := 0; j < config.WIDTH; j++ {
 			if (g.board[i][j] == config.EMPTY_SYMBOL) {
 				return j, i;
 			}
@@ -148,15 +148,14 @@ func (g Game) GetFreePositonAfterTurn() (int, int) {
 	return -1, -1;
 }
 
-func (g *Game) MakeTurn(x, y int) bool{
-	if (y < 0 || y >= config.HEIGHT || x < 0 || x >= config.WIDTH){
+func (g *Game) MakeTurn(x, y int) bool {
+	if (y < 0 || y >= config.HEIGHT || x < 0 || x >= config.WIDTH) {
 		return false
 	}
 	if (g.board[y][x] == config.EMPTY_SYMBOL) {
 		g.board[y][x] = g.GetCurrentPlayer().GetSymbol();
 		return true;
 	}
-	return  false;
-
+	return false;
 
 }
